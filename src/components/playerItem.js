@@ -58,7 +58,7 @@ class PlayerItem extends Component {
       <Grid.Column style={{ padding: '0!important' }} className="player-item">
         <Form className="player-control-panel ">
           <Form.Group inline>
-            <Form.Field style={{ minWidth: 'fit-content', textAlign: 'left', padding: '0 1rem 0 0' }}>
+            <Form.Field style={{ minWidth: '20%', maxWidth: "50%", textAlign: 'left', padding: '0 1rem 0 0' }}>
               <Label
                 as="span"
                 size="large"
