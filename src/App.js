@@ -38,6 +38,10 @@ class App extends Component {
             <Grid.Column>
               {auth.user && !auth.loading
               && <PokerDashboard auth={auth} />}
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Column style={{marginTop: "-1rem"}}>
               <UserInfo signIn={this.signIn} auth={auth} />
             </Grid.Column>
           </Grid.Row>
