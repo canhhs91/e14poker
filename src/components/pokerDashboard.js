@@ -195,8 +195,12 @@ class PokerDashboard extends Component {
 
 
     db.runTransaction((transaction) => Promise.all([
-      destRef.get().then((doc) => { destPlayer = doc.data(); }),
-      sourceRef.get().then((doc) => { sourcePlayer = doc.data(); }),
+      destRef.get().then((doc) => {
+        destPlayer = doc.data();
+      }),
+      sourceRef.get().then((doc) => {
+        sourcePlayer = doc.data();
+      }),
     ]).then(() => {
       if (sourcePlayer) {
         transaction.update(sourceRef, { buys: sourcePlayer.buys - this.state.gameSetting.stackSize });
@@ -322,12 +326,14 @@ class PokerDashboard extends Component {
               </Segment>
             </Grid.Column>
           </Grid.Row>
+          {this.state.archivedGames.length > 0
+          && (
           <Grid.Row>
             <Grid.Column width={16}>
-              {this.state.archivedGames.length > 0
-              && <ArchivedGamesTable style={{ width: '100%' }} archivedGames={this.state.archivedGames} />}
+              <ArchivedGamesTable style={{ width: '100%' }} archivedGames={this.state.archivedGames} />
             </Grid.Column>
           </Grid.Row>
+          )}
         </Grid>
 
         {this.state.selectedPlayer

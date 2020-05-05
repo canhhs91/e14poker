@@ -9,8 +9,10 @@
     "babel-eslint": "^10.1.0",
     "bootstrap": "^4.4.1",
     "dotenv": "^8.2.0",
+    "env-cmd": "^10.1.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-utils": "^2.0.0",
+    "firebase": "^7.14.2",
     "js-isort": "^3.1.0",
     "node-sass": "^4.13.1",
     "react": "^16.13.1",
@@ -18,13 +20,12 @@
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
     "semantic-ui-css": "^2.4.1",
-    "semantic-ui-react": "^0.88.2",
-    "firebase": "^7.14.2"
-
+    "semantic-ui-react": "^0.88.2"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "build:dev": "env-cmd -f .env.development react-scripts build", 
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint src/"

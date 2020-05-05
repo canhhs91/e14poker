@@ -52,9 +52,13 @@ const UserInfo = (props) => {
   if (auth.user) {
     return (
       <Label as={Button} onClick={() => firebaseAuth.signOut()}>
-        <span><Image style={{ marginTop: '-2px', float: 'left', width: '15px' }} src={auth.user.photoURL} /></span>
         <span>
-&nbsp; Log out
+          <Image style={{ marginTop: '-2px', float: 'left', width: '15px' }} src={auth.user.photoURL} />
+&nbsp;&nbsp;
+        </span>
+        <span>
+          Log out
+          {' '}
           {auth.user.email}
         </span>
       </Label>

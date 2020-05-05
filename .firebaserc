@@ -1,6 +1,6 @@
 {
   "projects": {
-    "default": "e14poker",
-    "development": "e14poker-dev"
+    "development": "e14club-dev",
+    "production": "e14club"
   }
 }
