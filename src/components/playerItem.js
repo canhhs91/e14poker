@@ -5,7 +5,7 @@ import {
 import formattedMoney from './formattedMoney';
 
 const PlayerName = (props) => (
-  <div style={{...props.style, verticalAlign: "middle"}}>
+  <div style={{ ...props.style, verticalAlign: 'middle' }}>
     <Icon name="user secret" />
     {props.name}
   </div>
@@ -15,7 +15,7 @@ const PlayerProfit = (props) => {
   const formattedAbsValue = formattedMoney(Math.abs(props.value));
   const formattedValue = (props.value > 0) ? formattedAbsValue : `(${formattedAbsValue})`;
   return (
-    <div style={{...props.style, display: "inline-flex", verticalAlign: "middle"}}>
+    <div style={{ ...props.style, display: 'inline-flex', verticalAlign: 'middle' }}>
       <Image centered style={{ width: '1rem', float: 'left', marginRight: '0.35em' }} src="/chips.png" />
       {
         formattedValue
@@ -58,16 +58,16 @@ class PlayerItem extends Component {
       <Grid.Column style={{ padding: '0!important' }} className="player-item">
         <Form className="player-control-panel ">
           <Form.Group inline>
-            <Form.Field style={{minWidth: "fit-content", textAlign: 'left', padding: '0 1rem 0 0' }}>
+            <Form.Field style={{ minWidth: 'fit-content', textAlign: 'left', padding: '0 1rem 0 0' }}>
               <Label
                 as="span"
                 size="large"
                 style={{
-                  textTransform: 'uppercase', width: '100%', minHeight: "32px", textAlign: 'left', borderRadius: 0,
+                  textTransform: 'uppercase', width: '100%', minHeight: '32px', textAlign: 'left', borderRadius: 0,
                 }}
               >
-                <PlayerName name={this.props.player.name} style={{display: "inline", marginRight: "0.5rem"}}/>
-                <Responsive maxWidth={767} style={{ display: "inline", width: '100%',  textAlign: 'left' }}>
+                <PlayerName name={this.props.player.name} style={{ display: 'inline', marginRight: '0.5rem' }} />
+                <Responsive maxWidth={767} style={{ display: 'inline', width: '100%', textAlign: 'left' }}>
                   <PlayerProfit
                     style={{
                       color: this.props.getLabelColorFromBuys(this.props.player.buys).backgroundColor,
@@ -85,7 +85,7 @@ class PlayerItem extends Component {
                 size="large"
                 color={this.props.getLabelColorFromBuys(this.props.player.buys).backgroundColor}
                 style={{
-                  height: "32px",
+                  height: '32px',
                   overFlow: 'visible',
                   width: `${String(100 * Math.abs(this.props.getPercentage(this.props.player.buys)))}%`,
                   borderRadius: 0,

@@ -34,7 +34,7 @@ class ArchivedGameRow extends Component {
               (player) => (
                 <Label style={{ margin: '0.3rem' }} key={`player${player.id}`}>
                   <PlayerName name={player.name} />
-                  <PlayerProfit value={-player.buys} style={{marginTop: "0.5rem"}} />
+                  <PlayerProfit value={-player.buys} style={{ marginTop: '0.5rem' }} />
                 </Label>
               ),
             )}

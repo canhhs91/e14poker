@@ -41,7 +41,7 @@ class App extends Component {
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
-            <Grid.Column style={{marginTop: "-1rem"}}>
+            <Grid.Column style={{ marginTop: '-1rem' }}>
               <UserInfo signIn={this.signIn} auth={auth} />
             </Grid.Column>
           </Grid.Row>
