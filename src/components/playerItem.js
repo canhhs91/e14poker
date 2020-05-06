@@ -13,7 +13,7 @@ const PlayerName = (props) => (
 
 const PlayerProfit = (props) => {
   const formattedAbsValue = formattedMoney(Math.abs(props.value));
-  const formattedValue = (props.value > 0) ? formattedAbsValue : `(${formattedAbsValue})`;
+  const formattedValue = (props.value >= 0) ? formattedAbsValue : `(${formattedAbsValue})`;
   return (
     <div style={{ ...props.style, display: 'inline-flex', verticalAlign: 'middle' }}>
       <Image centered style={{ height: '14px', float: 'left', marginRight: '0.35em' }} src="/chips.png" />
