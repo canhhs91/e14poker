@@ -16,7 +16,7 @@ const PlayerProfit = (props) => {
   const formattedValue = (props.value > 0) ? formattedAbsValue : `(${formattedAbsValue})`;
   return (
     <div style={{ ...props.style, display: 'inline-flex', verticalAlign: 'middle' }}>
-      <Image centered style={{ width: '1rem', float: 'left', marginRight: '0.35em' }} src="/chips.png" />
+      <Image centered style={{ height: '14px', float: 'left', marginRight: '0.35em' }} src="/chips.png" />
       {
         formattedValue
       }
@@ -58,7 +58,10 @@ class PlayerItem extends Component {
       <Grid.Column style={{ padding: '0!important' }} className="player-item">
         <Form className="player-control-panel ">
           <Form.Group inline>
-            <Form.Field style={{ minWidth: '20%', maxWidth: "50%", textAlign: 'left', padding: '0 1rem 0 0' }}>
+            <Form.Field style={{
+              minWidth: '20%', maxWidth: '50%', textAlign: 'left', padding: '0 1rem 0 0',
+            }}
+            >
               <Label
                 as="span"
                 size="large"

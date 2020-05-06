@@ -10,16 +10,8 @@ class CashOutModal extends Component {
     return (
       <Modal size="mini" open={this.props.open} centered={false}>
         <Modal.Header>
-          <Icon name="setting" />
-          {' '}
-          Cash
-          out
-          {' '}
-          {formattedMoney(this.props.cashoutAmount)}
-          {' '}
-          for
-          {' '}
-          {this.props.selectedPlayer.name}
+          <Icon name="money" />
+          {`Cash out ${formattedMoney(this.props.cashoutAmount)} for ${this.props.selectedPlayer.name}`}
         </Modal.Header>
         <Modal.Content>
           <Modal.Description>
@@ -88,7 +80,7 @@ const BuyInModal = (props) => (
   <Modal size="mini" open={props.open} centered={false}>
     <Modal.Header>
       <Icon name="money bill alternate outline" />
-      {` Buy in £${formattedMoney(props.gameSetting.stackSize)}for ${props.selectedPlayer.name} from`}
+      {` Buy in ${formattedMoney(props.gameSetting.stackSize)} for ${props.selectedPlayer.name} from`}
     </Modal.Header>
     <Modal.Content>
       <Modal.Description>
