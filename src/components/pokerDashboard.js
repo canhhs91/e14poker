@@ -62,7 +62,7 @@ class PokerDashboard extends Component {
   getLabelColorFromBuys = (buyInAmount) => {
     const percentage = this.getPercentage(buyInAmount);
     const background = (percentage > 0) ? 'orange' : 'blue';
-    const textColor = (Math.abs(percentage) > 0.1) ? 'white' : 'black';
+    const textColor = (Math.abs(percentage) > 0.15) ? 'white' : 'black';
     return { backgroundColor: background, textColor };
   }
 
@@ -244,7 +244,7 @@ class PokerDashboard extends Component {
     }
 
     if (!this.state.userHasPermission) {
-      return <DashboardMessage message="You don't have permissions to access the game" />;
+      return <DashboardMessage message={(<span>You don't have permissions to access the game. <br/> Want to discover the app? Please visit its <a target="_blank" href="https://e14club-dev.firebaseapp.com">development instance.</a></span>)} />;
     }
 
     return (
