@@ -202,7 +202,7 @@ class PokerDashboard extends Component {
         ...player,
         buys: player.buys - cashoutAmount,
       }).then(() => {
-        this.saveActivity(`${player.name.toUpperCase()} cash-out ${formattedMoney(cashoutAmount)}`);
+        this.saveActivity(`${player.name.toUpperCase()} cashed-out ${formattedMoney(cashoutAmount)}`);
       });
     });
   }
@@ -231,7 +231,7 @@ class PokerDashboard extends Component {
       const buyInSourceName = sourcePlayer ? sourcePlayer.name : 'BANK';
       this.saveActivity(
         `${destPlayer.name.toUpperCase()} 
-        buy ${formattedMoney(this.state.gameSetting.stackSize)} 
+        bought ${formattedMoney(this.state.gameSetting.stackSize)} 
         from ${buyInSourceName.toUpperCase()}`,
       );
     }));
@@ -248,7 +248,7 @@ class PokerDashboard extends Component {
       buys: DEFAULT_STACK_SIZE,
     }).then(() => {
       this.saveActivity(`${name.toUpperCase()} 
-      join and buy ${formattedMoney(this.state.gameSetting.stackSize)} from BANK`);
+      joined and bought ${formattedMoney(this.state.gameSetting.stackSize)} from BANK`);
     }));
     this.handleNewPlayerModalClose();
   }
