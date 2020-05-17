@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Header, Table, Label } from 'semantic-ui-react';
-import { db } from '../firebase';
+import { db } from '../database';
 import { PlayerName, PlayerProfit } from './playerItem';
 
 class ArchivedGameRow extends Component {

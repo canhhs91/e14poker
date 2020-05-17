@@ -5,10 +5,11 @@ import {
 import formattedMoney from './formattedMoney';
 import ArchivedGamesTable from './archivedGamesTable';
 import {
+  ActivityLogModal,
   BuyInModal, CashOutModal, GameSettingModal, NewPlayerModal,
 } from './modals';
 import PlayerItem from './playerItem';
-import { db } from '../firebase';
+import { db } from '../database';
 
 const DEFAULT_STACK_SIZE = 2000;
 const DEFAULT_LIMIT_BUYIN = 10000;
@@ -23,6 +24,7 @@ class PokerDashboard extends Component {
       cashoutModalOpen: false,
       newPlayerModalOpen: false,
       gameSettingModalOpen: false,
+      activityLogModalOpen: false,
       cashoutAmount: DEFAULT_STACK_SIZE,
       players: [],
       archivedGames: [],
@@ -30,6 +32,7 @@ class PokerDashboard extends Component {
         stackSize: DEFAULT_STACK_SIZE, // In GBP
         buyInAllowance: DEFAULT_LIMIT_BUYIN, // In GBP
       },
+      activities: [],
     };
   }
 
@@ -88,6 +91,14 @@ class PokerDashboard extends Component {
 
         this.setState({ players });
       });
+
+
+      activeGame.docRef.collection('activities').orderBy('createdAt', 'desc').onSnapshot((activitySnapshot) => {
+        const activities = activitySnapshot.docs.map((doc) => ({ id: doc.id, docRef: doc.ref, ...doc.data() }));
+        this.setState({ activities });
+      });
+
+
       this.setState({ userHasPermission: true, loadingData: false });
     }, (error) => {
       if (error.code === 'permission-denied') {
@@ -100,7 +111,7 @@ class PokerDashboard extends Component {
 
   handleEndGame = () => {
     if (this.getTotalBuyIn() !== 0) {
-      alert('Cannot end the game until all players have cashed out their chips (i.e. the total buy-in is zero)');
+      alert('Cannot end the game until all players have cashed out their chips (i.e. the CASH ON TABLE is zero)');
       return false;
     }
     if (window.confirm('This will archive the current game and create a new game. Would you like to end the game?')) {
@@ -146,6 +157,10 @@ class PokerDashboard extends Component {
     this.setState({ buyInModalOpen: false });
   }
 
+  handleActivityLogModalClose = () => {
+    this.setState({ activityLogModalOpen: false });
+  }
+
   handleCashoutModalClose = () => {
     this.setState({ cashoutModalOpen: false });
   }
@@ -156,6 +171,10 @@ class PokerDashboard extends Component {
 
   handleGameSettingModalClose = () => {
     this.setState({ gameSettingModalOpen: false });
+  }
+
+  handleActivityLogButtonClick = () => {
+    this.setState({ activityLogModalOpen: true });
   }
 
 
@@ -182,6 +201,8 @@ class PokerDashboard extends Component {
       playerRef.set({
         ...player,
         buys: player.buys - cashoutAmount,
+      }).then(() => {
+        this.saveActivity(`${player.name.toUpperCase()} cash-out ${formattedMoney(cashoutAmount)}`);
       });
     });
   }
@@ -206,6 +227,13 @@ class PokerDashboard extends Component {
         transaction.update(sourceRef, { buys: sourcePlayer.buys - this.state.gameSetting.stackSize });
       }
       transaction.update(destRef, { buys: destPlayer.buys + this.state.gameSetting.stackSize });
+
+      const buyInSourceName = sourcePlayer ? sourcePlayer.name : 'BANK';
+      this.saveActivity(
+        `${destPlayer.name.toUpperCase()} 
+        buy ${formattedMoney(this.state.gameSetting.stackSize)} 
+        from ${buyInSourceName.toUpperCase()}`,
+      );
     }));
   }
 
@@ -218,8 +246,20 @@ class PokerDashboard extends Component {
     Object.values(names).filter((name) => name !== '').map((name) => this.activeGameRef().collection('players').add({
       name,
       buys: DEFAULT_STACK_SIZE,
+    }).then(() => {
+      this.saveActivity(`${name.toUpperCase()} 
+      join and buy ${formattedMoney(this.state.gameSetting.stackSize)} from BANK`);
     }));
     this.handleNewPlayerModalClose();
+  }
+
+  saveActivity = (action) => {
+    const { email } = this.props.auth.user;
+    this.activeGameRef().collection('activities').add({
+      email,
+      action,
+      createdAt: new Date(),
+    });
   }
 
   render() {
@@ -236,6 +276,7 @@ class PokerDashboard extends Component {
           getPercentage={this.getPercentage}
           gameSetting={this.state.gameSetting}
           activeGameRef={this.activeGameRef}
+          saveActivity={this.saveActivity}
         />
       ),
     );
@@ -244,7 +285,11 @@ class PokerDashboard extends Component {
     }
 
     if (!this.state.userHasPermission) {
-      return <DashboardMessage message={(<span>You don't have permissions to access the game. <br/> Want to discover the app? Please visit its <a target="_blank" href="https://e14club-dev.firebaseapp.com">development instance.</a></span>)} />;
+      return (
+        <DashboardMessage message={(
+          <span>You do not have permissions to access the game.</span>)}
+        />
+      );
     }
 
     return (
@@ -268,7 +313,7 @@ class PokerDashboard extends Component {
             <Grid.Column width={4}>
               <Segment style={{ padding: '0.5rem' }}>
                 <Statistic size="mini">
-                  <Statistic.Label>Total Buy-in </Statistic.Label>
+                  <Statistic.Label>Cash on table</Statistic.Label>
                   <Statistic.Value>
                     {formattedMoney(this.getTotalBuyIn())}
                   </Statistic.Value>
@@ -308,6 +353,17 @@ class PokerDashboard extends Component {
                     RESET
                   </Responsive>
                 </Button>
+                <Button icon onClick={this.handleActivityLogButtonClick}>
+                  <Icon name="history" />
+                  <Responsive
+                    as="span"
+                    minWidth={768}
+                  >
+                    {' '}
+                    LOG
+                  </Responsive>
+                </Button>
+
                 {this.state.players.length > 0
                   ? (
                     <Button icon onClick={() => this.handleEndGame()} color="red">
@@ -328,11 +384,11 @@ class PokerDashboard extends Component {
           </Grid.Row>
           {this.state.archivedGames.length > 0
           && (
-          <Grid.Row>
-            <Grid.Column width={16}>
-              <ArchivedGamesTable style={{ width: '100%' }} archivedGames={this.state.archivedGames} />
-            </Grid.Column>
-          </Grid.Row>
+            <Grid.Row>
+              <Grid.Column width={16}>
+                <ArchivedGamesTable style={{ width: '100%' }} archivedGames={this.state.archivedGames} />
+              </Grid.Column>
+            </Grid.Row>
           )}
         </Grid>
 
@@ -361,7 +417,6 @@ class PokerDashboard extends Component {
         )}
         <NewPlayerModal
           open={this.state.newPlayerModalOpen}
-          handleNewPlayerClick={this.handleNewPlayerClick}
           handleModalClose={this.handleNewPlayerModalClose}
           addNewPlayer={this.addNewPlayer}
         />
@@ -371,6 +426,12 @@ class PokerDashboard extends Component {
           handleModalClose={this.handleGameSettingModalClose}
           gameSetting={this.state.gameSetting}
           saveGameSetting={this.saveGameSetting}
+        />
+
+        <ActivityLogModal
+          open={this.state.activityLogModalOpen}
+          handleModalClose={this.handleActivityLogModalClose}
+          activities={this.state.activities}
         />
 
 

@@ -151,6 +151,50 @@ class GameSettingModal extends Component {
   }
 }
 
+const ActivityLogModal = (props) => (
+  <Modal
+    size="mini"
+    open={props.open}
+    centered={false}
+    closeOnEscape
+    closeOnDimmerClick
+    onClose={props.handleModalClose}
+  >
+    <Modal.Header>
+      <Icon name="setting" />
+      {' '}
+      Activities
+    </Modal.Header>
+    <Modal.Content>
+      <Modal.Description>
+        <ul>
+          {props.activities.map((activity) => (
+            <li key={activity.id} style={{ margin: '1rem 0' }}>
+              {activity.action}
+              <br />
+              <span style={{ color: 'grey' }}>
+                <Icon name="time" />
+                {activity.createdAt.toDate().toLocaleString()}
+                {' '}
+                <Icon
+                  name="user"
+                />
+                {`${activity.email.slice(0, 5)}...`}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </Modal.Description>
+    </Modal.Content>
+    <Modal.Actions>
+      <Button onClick={props.handleModalClose}>
+        Close
+      </Button>
+    </Modal.Actions>
+  </Modal>
+
+);
+
 export {
-  NewPlayerModal, BuyInModal, GameSettingModal, CashOutModal,
+  NewPlayerModal, BuyInModal, GameSettingModal, CashOutModal, ActivityLogModal,
 };

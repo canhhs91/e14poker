@@ -41,7 +41,7 @@ class PlayerItem extends Component {
     this.props.activeGameRef().collection('players').doc(player.id).delete()
       .then(
         () => {
-          this.setState({ isDeleting: false });
+          this.props.saveActivity(`${player.name.toUpperCase()} left`);
         },
       )
       .catch(

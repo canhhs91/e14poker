@@ -4,7 +4,7 @@ import './App.scss';
 import {
   Button, Label, Icon, Grid, Image,
 } from 'semantic-ui-react';
-import { firebaseAuth, googleProvider } from './firebase';
+import { firebaseAuth, googleProvider } from './database';
 
 import PokerDashboard from './components/pokerDashboard';
 
