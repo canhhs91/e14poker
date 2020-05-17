@@ -161,7 +161,7 @@ const ActivityLogModal = (props) => (
     onClose={props.handleModalClose}
   >
     <Modal.Header>
-      <Icon name="setting" />
+      <Icon name="history" />
       {' '}
       Activities
     </Modal.Header>
